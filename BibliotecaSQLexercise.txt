@@ -1,0 +1,165 @@
+Answers to Biblioteca SQL Exercise:
+
+
+.open biblioteca.sqlite
+
+
+Answer 1)
+
+	1|5
+
+	SQL statement:
+	select checkout_item.member_id, book.id from checkout_item 
+	inner join book on book.id = checkout_item.book_id 
+	where book.title = "The Hobbit";
+
+
+Answer 2)
+
+	3|Sneha Wang
+	4|Judy Li
+	5|Anand Huang
+	9|Raquel Singh
+	10|Mauro Smith
+	11|Raquel Listov
+	12|Tanuj Fowler
+	13|Frank Listov
+	14|Alok Jain
+	15|Alok Knuth
+	16|Frank Beck
+	17|Scott Huang
+	18|Anand Schneider
+	19|Julian Evans
+	20|Mauro Singh
+	21|Scott Knuth
+	22|Faris Wang
+	23|Anand Smith
+	24|Frank Singh
+	25|Alok Gupta
+	26|Mauro Knuth
+	27|Frank Wang
+	28|Nandini Fowler
+	29|Mauro Hunt
+	30|Scott Jain
+	31|Alok Carmack
+	32|Billy Knuth
+	33|Tanuj Schneider
+	34|Faris Huang
+	35|Anand Li
+	36|Julian Huang
+	37|Julian Schneider
+	38|Judy Singh
+	39|Nandini Carmack
+	40|Tanuj Listov
+	41|Naval Hunt
+	42|Schweta Jain
+
+	SQL statement: 
+	select * from member 
+	where id not in (select member_id from checkout_item);
+
+
+
+Answer 3)
+
+	SQL statement:
+	select * from book 
+	where id not in (select book_id from checkout_item) 
+	union 
+	select * from movie 
+	where id not in (select movie_id from checkout_item);
+
+
+Answer 4)
+
+	insert into book (title) values ('The Pragmatic Programmer');
+	select * from book;
+
+	1|Life of Pi
+	2|Fellowship of the Ring
+	3|Two Towers
+	4|Dune
+	5|The Hobbit
+	6|1984
+	7|Tom Sawyer
+	8|Catcher in the Rye
+	9|To Kill a Mockingbird
+	10|Domain Driven Design
+	11|The Pragmatic Programmer
+
+
+	insert into member (name) values ('Niharika');
+	select * from member;
+	1|Anand Beck
+	2|Yaxuan Evans
+	3|Sneha Wang
+	4|Judy Li
+	5|Anand Huang
+	6|Frank Smith
+	7|Sneha Carmack
+	8|Julian Listov
+	9|Raquel Singh
+	10|Mauro Smith
+	11|Raquel Listov
+	12|Tanuj Fowler
+	13|Frank Listov
+	14|Alok Jain
+	15|Alok Knuth
+	16|Frank Beck
+	17|Scott Huang
+	18|Anand Schneider
+	19|Julian Evans
+	20|Mauro Singh
+	21|Scott Knuth
+	22|Faris Wang
+	23|Anand Smith
+	24|Frank Singh
+	25|Alok Gupta
+	26|Mauro Knuth
+	27|Frank Wang
+	28|Nandini Fowler
+	29|Mauro Hunt
+	30|Scott Jain
+	31|Alok Carmack
+	32|Billy Knuth
+	33|Tanuj Schneider
+	34|Faris Huang
+	35|Anand Li
+	36|Julian Huang
+	37|Julian Schneider
+	38|Judy Singh
+	39|Nandini Carmack
+	40|Tanuj Listov
+	41|Naval Hunt
+	42|Schweta Jain
+	43|Niharika
+
+
+
+	insert into checkout_item (member_id, book_id) 
+	values ((select id from member where name = "Niharika"),(select id from book where title = 'The Pragmatic Programmer'));
+	select * from checkout_item;
+	6|1|
+	1|3|
+	2|4|
+	1|5|
+	1||1
+	7||2
+	6||3
+	8||4
+	6||5
+	43|11|
+
+//to verify the checkout
+	select member_id from checkout_item where book_id = (select id from book where title = "The Pragmatic Programmer");
+	43
+
+
+
+Answer 5)
+
+	1
+	6
+
+	SQL statement:
+	select member_id from checkout_item group by member_id having count(member_id)>1;
